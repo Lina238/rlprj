@@ -27,14 +27,22 @@
 	<vehicle id="veh11" type="Bus" route="route0" depart="11" color="1,1,0" departLane="2"/>
 	<vehicle id="veh12" type="Bus" route="route0" depart="12" color="1,1,0" departLane="0"/>
 	<vehicle id="veh13" type="Bus" route="route0" depart="13" color="1,1,0" departLane="1"/>
+	<vehicle id="veh400" type="Car" route="route1" depart="188" color="1,0,0" departLane="0"/> 
+	<vehicle id="veh288" type="Car" route="route1" depart="188" color="1,0,0" departLane="0"/> 
+	<vehicle id="veh288" type="Car" route="route1" depart="188" color="1,0,0" departLane="0"/> 
+	<vehicle id="veh288" type="Car" route="route1" depart="188" color="1,0,0" departLane="0"/> 
+	<vehicle id="veh288" type="Car" route="route1" depart="188" color="1,0,0" departLane="0"/> 
 	<vehicle id="veh14" type="Bus" route="route0" depart="14" color="1,1,0" departLane="2"/>
-	<vehicle id="veh15" type="Bus" route="route1" depart="15" color="1,1,0" departLane="0"/>
+	<vehicle id="veh15" type="Bus" route="route0" depart="15" color="1,1,0" departLane="0"/>
 	<vehicle id="veh16" type="Bus" route="route0" depart="16" color="1,1,0" departLane="1"/>
+	<vehicle id="veh14" type="Bus" route="route1" depart="14" color="1,1,0" departLane="0"/>
+	<vehicle id="veh15" type="Bus" route="route1" depart="15" color="1,1,0" departLane="0"/>
+	<vehicle id="veh16" type="Bus" route="route1" depart="16" color="1,1,0" departLane="0"/>
 	<vehicle id="veh17" type="Car" route="route0" depart="17" color="1,1,0" departLane="2"/>
-	<vehicle id="veh18" type="Bus" route="route1" depart="18" color="1,1,0" departLane="0"/>
+	<vehicle id="veh18" type="Bus" route="route0" depart="18" color="1,1,0" departLane="0"/>
 	<vehicle id="veh19" type="Bus" route="route0" depart="19" color="1,1,0" departLane="1"/>
 	<vehicle id="veh20" type="Bus" route="route0" depart="20" color="1,1,0" departLane="2"/>
-	<vehicle id="veh21" type="Bus" route="route1" depart="21" color="1,1,0" departLane="0"/>
+	<vehicle id="veh21" type="Bus" route="route0" depart="21" color="1,1,0" departLane="0"/>
 	<vehicle id="veh22" type="Bus" route="route0" depart="22" color="1,1,0" departLane="1"/>
 	<vehicle id="veh23" type="Bus" route="route0" depart="23" color="1,1,0" departLane="2"/>
 	<vehicle id="veh24" type="Bus" route="route0" depart="24" color="1,1,0" departLane="0"/>

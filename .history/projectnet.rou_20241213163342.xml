@@ -27,6 +27,10 @@
 	<vehicle id="veh11" type="Bus" route="route0" depart="11" color="1,1,0" departLane="2"/>
 	<vehicle id="veh12" type="Bus" route="route0" depart="12" color="1,1,0" departLane="0"/>
 	<vehicle id="veh13" type="Bus" route="route0" depart="13" color="1,1,0" departLane="1"/>
+	<vehicle id="veh288" type="Car" route="route1" depart="188" color="1,0,0" departLane="0"/> 
+	<vehicle id="veh288" type="Car" route="route1" depart="188" color="1,0,0" departLane="0"/> 
+	<vehicle id="veh288" type="Car" route="route1" depart="188" color="1,0,0" departLane="0"/> 
+	<vehicle id="veh288" type="Car" route="route1" depart="188" color="1,0,0" departLane="0"/> 
 	<vehicle id="veh14" type="Bus" route="route0" depart="14" color="1,1,0" departLane="2"/>
 	<vehicle id="veh15" type="Bus" route="route1" depart="15" color="1,1,0" departLane="0"/>
 	<vehicle id="veh16" type="Bus" route="route0" depart="16" color="1,1,0" departLane="1"/>
