@@ -10,9 +10,9 @@ try:
     # Déclaration des constantes selon notre network (projectnet.net)
     state = [
         traci.edge.getLastStepHaltingNumber("in"),       # Nombre de véhicules en arrêt sur la route principale
-        traci.edge.getLastStepHaltingNumber("intramp"),  # Nombre de véhicules en arrêt sur la rampe
+        traci.edge.getLastStepHaltingNumber("E2"),  # Nombre de véhicules en arrêt sur la rampe
         traci.edge.getLastStepMeanSpeed("in"),           # Vitesse moyenne des véhicules sur la route principale
-        traci.edge.getLastStepMeanSpeed("intramp"),      # Vitesse moyenne des véhicules sur la rampe
+        traci.edge.getLastStepMeanSpeed("E2"),      # Vitesse moyenne des véhicules sur la rampe
     ]
     
     # Afficher les états
