@@ -42,11 +42,11 @@ class TrafficLightRL:
         # Utilisation de deque pour la mémoire (circular buffer)
         self.memory = deque(maxlen=self.MEMORY_CAPACITY)
     class EpisodeInfo:
-        def __init__(self, episode, reward, steps):
+        def __init__(self, episode, reward, steps,loss):
             self.episode = episode
             self.reward = reward
             self.steps = steps
-            
+            self.loss = loss 
     def _build_model(self):
         """Construire le modèle de réseau neuronal"""
         model = tf.keras.Sequential([
@@ -85,7 +85,7 @@ class TrafficLightRL:
         try:
             # Convertir les objets EpisodeInfo en dictionnaire pour pouvoir les sérialiser en JSON
             rewards_data = [
-                {"episode": ep.episode, "reward": ep.reward, "steps": ep.steps} 
+                {"episode": ep.episode, "reward": ep.reward, "steps": ep.steps,"loss": ep.loss}
                 for ep in self.rewards_history
             ]
             with open(filename, 'w') as f:
@@ -134,58 +134,59 @@ class TrafficLightRL:
                 targets[i][actions[i]] = rewards[i] + self.GAMMA * np.max(next_q_values[i])
 
         # Entraînement du modèle avec les cibles mises à jour
-        self.model.fit(states, targets, epochs=1, verbose=0, batch_size=self.BATCH_SIZE)
-
+        history = self.model.fit(states, targets, epochs=1, verbose=0, batch_size=self.BATCH_SIZE)
+        loss = history.history['loss'][0]  # La première (et unique) valeur de la perte
+        return loss
     def train(self, sumo_config, control_traffic_lights=True, model_name="traffic_light_model"):
         """Entraîner l'agent en simulant les épisodes dans SUMO"""
-        try:
-            traci.start(["sumo", "-c", sumo_config])  # Démarrer la simulation SUMO
-            
-            for episode in range(self.NUM_EPISODES):
-                print(f"Début de l'épisode {episode + 1}/{self.NUM_EPISODES}")
-                traci.load(["-c", sumo_config])  # Recharger la simulation pour chaque épisode
-                state = self.get_state()  # Obtenir l'état initial
-                total_reward = 0
-                step = 0
+     try:
+        traci.start(["sumo", "-c", sumo_config])  # Démarrer la simulation SUMO
+        
+        for episode in range(self.NUM_EPISODES):
+            print(f"Début de l'épisode {episode + 1}/{self.NUM_EPISODES}")
+            traci.load(["-c", sumo_config])  # Recharger la simulation pour chaque épisode
+            state = self.get_state()  # Obtenir l'état initial
+            total_reward = 0
+            total_loss = 0  # Variable pour suivre la perte totale
+            step = 0
 
-                while traci.simulation.getTime() <= self.SIMULATION_TIME:  # Exécuter l'épisode pendant un certain temps
-                    if control_traffic_lights:  # Si le contrôle des feux est activé
-                        
-                        action = self.choose_action(state)  # Choisir l'action à partir de la politique
-                        self._apply_action(action)  # Appliquer l'action (changer la phase du feu)
-                    else:
-                        action = 0  # Default phase
-                        traci.trafficlight.setPhase("n6", action)  # Phase par défaut
-                        traci.simulationStep()  # Effectuer un pas de simulation
-                    
-                    next_state = self.get_state()  # Obtenir l'état suivant
-                    reward = self.calculate_reward(state, action, next_state)  # Calculer la récompense
-                    done = traci.simulation.getTime() > self.SIMULATION_TIME  # Vérifier si l'épisode est terminé
-
-                    self._store_experience(state, action, reward, next_state, done)  # Enregistrer l'expérience
-                    self.update_network()  # Mettre à jour le modèle
-
-                    state = next_state
-                    total_reward += reward
-                    step += 1
-
-                    if done:
-                        break
-
-                print(f"Épisode {episode + 1} terminé, Récompense: {total_reward:.2f}, Étapes: {step}")
-                episode_info = self.EpisodeInfo(episode + 1, total_reward, step)
-                self.rewards_history.append(episode_info)
-                self.save_rewards()
-                if episode % self.TARGET_UPDATE_FREQ == 0:  # Mise à jour du modèle cible
-                    self.target_model.set_weights(self.model.get_weights())
+            while traci.simulation.getTime() <= self.SIMULATION_TIME:  # Exécuter l'épisode pendant un certain temps
+                if control_traffic_lights:  # Si le contrôle des feux est activé
+                    action = self.choose_action(state)  # Choisir l'action à partir de la politique
+                    self._apply_action(action)  # Appliquer l'action (changer la phase du feu)
+                else:
+                    traci.trafficlight.setPhase("n6", 0)  # Phase par défaut
+                    traci.simulationStep()  # Effectuer un pas de simulation
                 
-                if (episode + 1) % 10 == 0:  # Sauvegarder le modèle tous les 10 épisodes
-                    self._save_model(model_name, episode)
+                next_state = self.get_state()  # Obtenir l'état suivant
+                reward = self.calculate_reward(state, action, next_state)  # Calculer la récompense
+                done = traci.simulation.getTime() > self.SIMULATION_TIME  # Vérifier si l'épisode est terminé
 
-        except Exception as e:
-            print(f"Erreur pendant l'entraînement: {e}")
-        finally:
-            traci.close()  # Fermer la connexion à SUMO
+                self._store_experience(state, action, reward, next_state, done)  # Enregistrer l'expérience
+                loss = self.update_network()  # Mettre à jour le modèle et obtenir la perte
+
+                state = next_state
+                total_reward += reward
+                total_loss += loss  # Accumuler la perte
+                step += 1
+
+                if done:
+                    break
+
+            print(f"Épisode {episode + 1} terminé, Récompense: {total_reward:.2f}, Perte: {total_loss:.4f}, Étapes: {step}")
+            episode_info = self.EpisodeInfo(episode + 1, total_reward, step, total_loss)
+            self.rewards_history.append(episode_info)
+            self.save_rewards()
+            if episode % self.TARGET_UPDATE_FREQ == 0:  # Mise à jour du modèle cible
+                self.target_model.set_weights(self.model.get_weights())
+            
+            if (episode + 1) % 10 == 0:  # Sauvegarder le modèle tous les 10 épisodes
+                self._save_model(model_name, episode)
+
+    except Exception as e:
+        print(f"Erreur pendant l'entraînement: {e}")
+    finally:
+        traci.close()  # Fermer la connexion à SUMO
 
     def _apply_action(self, action):
         """Appliquer l'action en modifiant la phase du feu"""
@@ -213,8 +214,7 @@ def main():
     """Fonction principale d'entraînement"""
     config_file = "../projectnet.sumocfg"  # Fichier de configuration SUMO
     agent = TrafficLightRL()  # Créer une instance de l'agent
-    # agent.train(config_file, control_traffic_lights=True, model_name="traffic_light_control")  # Entraîner l'agent
-    agent.train(config_file, control_traffic_lights=False, model_name="without_traffic_light_control")  # Entraîner l'agent
+    agent.train(config_file, control_traffic_lights=True, model_name="traffic_light_control")  # Entraîner l'agent
 
 if __name__ == "__main__":
     main()  # Exécuter la fonction principale

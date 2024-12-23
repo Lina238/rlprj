@@ -46,7 +46,7 @@ class TrafficLightRL:
             self.episode = episode
             self.reward = reward
             self.steps = steps
-            
+            self.loss = loss 
     def _build_model(self):
         """Construire le modèle de réseau neuronal"""
         model = tf.keras.Sequential([
@@ -109,33 +109,37 @@ class TrafficLightRL:
         next_state = np.array(next_state, dtype=np.float32)
         self.memory.append((state, action, reward, next_state, done))  # Ajouter l'expérience dans la mémoire
 
-    def update_network(self):
-        """Mettre à jour les poids du réseau de neurones"""
-        if len(self.memory) < self.BATCH_SIZE:  # S'il n'y a pas assez d'expériences
-            return
+ # Modification de la méthode update_network pour enregistrer la perte
+def update_network(self):
+    """Mettre à jour les poids du réseau de neurones et calculer la perte"""
+    if len(self.memory) < self.BATCH_SIZE:  # S'il n'y a pas assez d'expériences
+        return
 
-        minibatch = random.sample(self.memory, self.BATCH_SIZE)  # Prendre un mini-lot d'expériences
+    minibatch = random.sample(self.memory, self.BATCH_SIZE)  # Prendre un mini-lot d'expériences
 
-        # Extraire les composants du mini-lot
-        states = np.array([transition[0] for transition in minibatch])
-        actions = np.array([transition[1] for transition in minibatch])
-        rewards = np.array([transition[2] for transition in minibatch])
-        next_states = np.array([transition[3] for transition in minibatch])
-        dones = np.array([transition[4] for transition in minibatch])
+    # Extraire les composants du mini-lot
+    states = np.array([transition[0] for transition in minibatch])
+    actions = np.array([transition[1] for transition in minibatch])
+    rewards = np.array([transition[2] for transition in minibatch])
+    next_states = np.array([transition[3] for transition in minibatch])
+    dones = np.array([transition[4] for transition in minibatch])
 
-        current_q_values = self.model.predict(states, verbose=0)  # Prédire les Q-valeurs actuelles
-        next_q_values = self.target_model.predict(next_states, verbose=0)  # Prédire les Q-valeurs futures
+    current_q_values = self.model.predict(states, verbose=0)  # Prédire les Q-valeurs actuelles
+    next_q_values = self.target_model.predict(next_states, verbose=0)  # Prédire les Q-valeurs futures
 
-        targets = current_q_values.copy()  # Copier les Q-valeurs actuelles
-        for i in range(self.BATCH_SIZE):
-            if dones[i]:  # Si l'épisode est terminé
-                targets[i][actions[i]] = rewards[i]
-            else:  # Sinon, mise à jour avec la récompense et les Q-valeurs futures
-                targets[i][actions[i]] = rewards[i] + self.GAMMA * np.max(next_q_values[i])
+    targets = current_q_values.copy()  # Copier les Q-valeurs actuelles
+    for i in range(self.BATCH_SIZE):
+        if dones[i]:  # Si l'épisode est terminé
+            targets[i][actions[i]] = rewards[i]
+        else:  # Sinon, mise à jour avec la récompense et les Q-valeurs futures
+            targets[i][actions[i]] = rewards[i] + self.GAMMA * np.max(next_q_values[i])
 
-        # Entraînement du modèle avec les cibles mises à jour
-        self.model.fit(states, targets, epochs=1, verbose=0, batch_size=self.BATCH_SIZE)
+    # Entraînement du modèle avec les cibles mises à jour
+    history = self.model.fit(states, targets, epochs=1, verbose=0, batch_size=self.BATCH_SIZE)
 
+    # Extraire la perte de l'entraînement
+    loss = history.history['loss'][0]  # La première (et unique) valeur de la perte
+    return loss
     def train(self, sumo_config, control_traffic_lights=True, model_name="traffic_light_model"):
         """Entraîner l'agent en simulant les épisodes dans SUMO"""
         try:
@@ -150,12 +154,10 @@ class TrafficLightRL:
 
                 while traci.simulation.getTime() <= self.SIMULATION_TIME:  # Exécuter l'épisode pendant un certain temps
                     if control_traffic_lights:  # Si le contrôle des feux est activé
-                        
                         action = self.choose_action(state)  # Choisir l'action à partir de la politique
                         self._apply_action(action)  # Appliquer l'action (changer la phase du feu)
                     else:
-                        action = 0  # Default phase
-                        traci.trafficlight.setPhase("n6", action)  # Phase par défaut
+                        traci.trafficlight.setPhase("n6", 0)  # Phase par défaut
                         traci.simulationStep()  # Effectuer un pas de simulation
                     
                     next_state = self.get_state()  # Obtenir l'état suivant
@@ -213,8 +215,7 @@ def main():
     """Fonction principale d'entraînement"""
     config_file = "../projectnet.sumocfg"  # Fichier de configuration SUMO
     agent = TrafficLightRL()  # Créer une instance de l'agent
-    # agent.train(config_file, control_traffic_lights=True, model_name="traffic_light_control")  # Entraîner l'agent
-    agent.train(config_file, control_traffic_lights=False, model_name="without_traffic_light_control")  # Entraîner l'agent
+    agent.train(config_file, control_traffic_lights=True, model_name="traffic_light_control")  # Entraîner l'agent
 
 if __name__ == "__main__":
     main()  # Exécuter la fonction principale

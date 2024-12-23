@@ -46,7 +46,7 @@ class TrafficLightRL:
             self.episode = episode
             self.reward = reward
             self.steps = steps
-            
+            self.loss = loss 
     def _build_model(self):
         """Construire le modèle de réseau neuronal"""
         model = tf.keras.Sequential([
@@ -85,7 +85,7 @@ class TrafficLightRL:
         try:
             # Convertir les objets EpisodeInfo en dictionnaire pour pouvoir les sérialiser en JSON
             rewards_data = [
-                {"episode": ep.episode, "reward": ep.reward, "steps": ep.steps} 
+                {"episode": ep.episode, "reward": ep.reward, "steps": ep.steps"loss": ep.loss}
                 for ep in self.rewards_history
             ]
             with open(filename, 'w') as f:
@@ -134,8 +134,9 @@ class TrafficLightRL:
                 targets[i][actions[i]] = rewards[i] + self.GAMMA * np.max(next_q_values[i])
 
         # Entraînement du modèle avec les cibles mises à jour
-        self.model.fit(states, targets, epochs=1, verbose=0, batch_size=self.BATCH_SIZE)
-
+        history = self.model.fit(states, targets, epochs=1, verbose=0, batch_size=self.BATCH_SIZE)
+        loss = history.history['loss'][0]  # La première (et unique) valeur de la perte
+        return loss
     def train(self, sumo_config, control_traffic_lights=True, model_name="traffic_light_model"):
         """Entraîner l'agent en simulant les épisodes dans SUMO"""
         try:
@@ -150,12 +151,10 @@ class TrafficLightRL:
 
                 while traci.simulation.getTime() <= self.SIMULATION_TIME:  # Exécuter l'épisode pendant un certain temps
                     if control_traffic_lights:  # Si le contrôle des feux est activé
-                        
                         action = self.choose_action(state)  # Choisir l'action à partir de la politique
                         self._apply_action(action)  # Appliquer l'action (changer la phase du feu)
                     else:
-                        action = 0  # Default phase
-                        traci.trafficlight.setPhase("n6", action)  # Phase par défaut
+                        traci.trafficlight.setPhase("n6", 0)  # Phase par défaut
                         traci.simulationStep()  # Effectuer un pas de simulation
                     
                     next_state = self.get_state()  # Obtenir l'état suivant
@@ -213,8 +212,7 @@ def main():
     """Fonction principale d'entraînement"""
     config_file = "../projectnet.sumocfg"  # Fichier de configuration SUMO
     agent = TrafficLightRL()  # Créer une instance de l'agent
-    # agent.train(config_file, control_traffic_lights=True, model_name="traffic_light_control")  # Entraîner l'agent
-    agent.train(config_file, control_traffic_lights=False, model_name="without_traffic_light_control")  # Entraîner l'agent
+    agent.train(config_file, control_traffic_lights=True, model_name="traffic_light_control")  # Entraîner l'agent
 
 if __name__ == "__main__":
     main()  # Exécuter la fonction principale

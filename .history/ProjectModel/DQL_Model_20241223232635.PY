@@ -155,7 +155,7 @@ class TrafficLightRL:
                         self._apply_action(action)  # Appliquer l'action (changer la phase du feu)
                     else:
                         action = 0  # Default phase
-                        traci.trafficlight.setPhase("n6", action)  # Phase par défaut
+                        traci.trafficlight.setPhase("n6", 0)  # Phase par défaut
                         traci.simulationStep()  # Effectuer un pas de simulation
                     
                     next_state = self.get_state()  # Obtenir l'état suivant

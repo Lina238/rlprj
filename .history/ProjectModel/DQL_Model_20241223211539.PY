@@ -46,7 +46,6 @@ class TrafficLightRL:
             self.episode = episode
             self.reward = reward
             self.steps = steps
-            
     def _build_model(self):
         """Construire le modèle de réseau neuronal"""
         model = tf.keras.Sequential([
@@ -94,7 +93,7 @@ class TrafficLightRL:
         
         except Exception as e:
             print(f"Erreur lors de la sauvegarde des récompenses : {e}")
-    def calculate_reward(self, state, action, next_state):
+    def calculate_reward(self, state, action, check_if_donenext_state):
         """Calculer la récompense associée à une transition d'état"""
         queue_length = -(next_state[0] + next_state[1])  # Récompense basée sur la longueur des files d'attente
         speed_factor = (next_state[2] + next_state[3]) * 0.5  # Facteur basé sur la vitesse moyenne
@@ -150,12 +149,10 @@ class TrafficLightRL:
 
                 while traci.simulation.getTime() <= self.SIMULATION_TIME:  # Exécuter l'épisode pendant un certain temps
                     if control_traffic_lights:  # Si le contrôle des feux est activé
-                        
                         action = self.choose_action(state)  # Choisir l'action à partir de la politique
                         self._apply_action(action)  # Appliquer l'action (changer la phase du feu)
                     else:
-                        action = 0  # Default phase
-                        traci.trafficlight.setPhase("n6", action)  # Phase par défaut
+                        traci.trafficlight.setPhase("n6", 0)  # Phase par défaut
                         traci.simulationStep()  # Effectuer un pas de simulation
                     
                     next_state = self.get_state()  # Obtenir l'état suivant
@@ -213,8 +210,7 @@ def main():
     """Fonction principale d'entraînement"""
     config_file = "../projectnet.sumocfg"  # Fichier de configuration SUMO
     agent = TrafficLightRL()  # Créer une instance de l'agent
-    # agent.train(config_file, control_traffic_lights=True, model_name="traffic_light_control")  # Entraîner l'agent
-    agent.train(config_file, control_traffic_lights=False, model_name="without_traffic_light_control")  # Entraîner l'agent
+    agent.train(config_file, control_traffic_lights=True, model_name="traffic_light_control")  # Entraîner l'agent
 
 if __name__ == "__main__":
     main()  # Exécuter la fonction principale

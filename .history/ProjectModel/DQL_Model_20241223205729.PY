@@ -41,12 +41,7 @@ class TrafficLightRL:
 
         # Utilisation de deque pour la mémoire (circular buffer)
         self.memory = deque(maxlen=self.MEMORY_CAPACITY)
-    class EpisodeInfo:
-        def __init__(self, episode, reward, steps):
-            self.episode = episode
-            self.reward = reward
-            self.steps = steps
-            
+
     def _build_model(self):
         """Construire le modèle de réseau neuronal"""
         model = tf.keras.Sequential([
@@ -80,20 +75,10 @@ class TrafficLightRL:
         state_tensor = np.expand_dims(state, 0)  # Ajouter une dimension pour le batch
         q_values = self.model.predict(state_tensor, verbose=0)  # Prédire les Q-valeurs pour l'état donné
         return np.argmax(q_values[0])  # Choisir l'action avec la plus grande Q-valeur
-    def save_rewards(self, filename="rewards_history.json"):
-        """Sauvegarder les récompenses de tous les épisodes dans un fichier JSON."""
-        try:
-            # Convertir les objets EpisodeInfo en dictionnaire pour pouvoir les sérialiser en JSON
-            rewards_data = [
-                {"episode": ep.episode, "reward": ep.reward, "steps": ep.steps} 
-                for ep in self.rewards_history
-            ]
-            with open(filename, 'w') as f:
-                json.dump(rewards_data, f, indent=4)
-            print(f"Récompenses sauvegardées dans {filename}")
-        
-        except Exception as e:
-            print(f"Erreur lors de la sauvegarde des récompenses : {e}")
+    def save_rewards(self):
+        """Sauvegarder les récompenses dans un fichier JSON"""
+        with open("rewards_history.json", "w") as f:
+        json.dump(self.rewards_history, f)  
     def calculate_reward(self, state, action, next_state):
         """Calculer la récompense associée à une transition d'état"""
         queue_length = -(next_state[0] + next_state[1])  # Récompense basée sur la longueur des files d'attente
@@ -150,12 +135,10 @@ class TrafficLightRL:
 
                 while traci.simulation.getTime() <= self.SIMULATION_TIME:  # Exécuter l'épisode pendant un certain temps
                     if control_traffic_lights:  # Si le contrôle des feux est activé
-                        
                         action = self.choose_action(state)  # Choisir l'action à partir de la politique
                         self._apply_action(action)  # Appliquer l'action (changer la phase du feu)
                     else:
-                        action = 0  # Default phase
-                        traci.trafficlight.setPhase("n6", action)  # Phase par défaut
+                        traci.trafficlight.setPhase("n6", 0)  # Phase par défaut
                         traci.simulationStep()  # Effectuer un pas de simulation
                     
                     next_state = self.get_state()  # Obtenir l'état suivant
@@ -173,9 +156,7 @@ class TrafficLightRL:
                         break
 
                 print(f"Épisode {episode + 1} terminé, Récompense: {total_reward:.2f}, Étapes: {step}")
-                episode_info = self.EpisodeInfo(episode + 1, total_reward, step)
-                self.rewards_history.append(episode_info)
-                self.save_rewards()
+                self.rewards_history.append(total_reward)
                 if episode % self.TARGET_UPDATE_FREQ == 0:  # Mise à jour du modèle cible
                     self.target_model.set_weights(self.model.get_weights())
                 
@@ -213,8 +194,7 @@ def main():
     """Fonction principale d'entraînement"""
     config_file = "../projectnet.sumocfg"  # Fichier de configuration SUMO
     agent = TrafficLightRL()  # Créer une instance de l'agent
-    # agent.train(config_file, control_traffic_lights=True, model_name="traffic_light_control")  # Entraîner l'agent
-    agent.train(config_file, control_traffic_lights=False, model_name="without_traffic_light_control")  # Entraîner l'agent
+    agent.train(config_file, control_traffic_lights=True, model_name="traffic_light_control")  # Entraîner l'agent
 
 if __name__ == "__main__":
     main()  # Exécuter la fonction principale
