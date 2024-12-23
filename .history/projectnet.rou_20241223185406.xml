@@ -23,20 +23,20 @@
 	<vehicle id="veh7" type="Truck" route="route0" depart="7" color="1,1,0" departLane="1"/>
 	<vehicle id="veh8" type="Truck" route="route0" depart="8" color="1,1,0" departLane="2"/>
 	<vehicle id="veh9" type="Truck" route="route0" depart="9" color="1,1,0" departLane="0"/>
-	<vehicle id="veh10" type="Car" route="route1" depart="10" color="1,1,0" departLane="0"/>
-	<vehicle id="veh11" type="Bus" route="route1" depart="11" color="1,1,0" departLane="0"/>
+	<vehicle id="veh10" type="Car" route="route1" depart="10" color="1,1,0" departLane="1"/>
+	<vehicle id="veh11" type="Bus" route="route1" depart="11" color="1,1,0" departLane="2"/>
 	<vehicle id="veh12" type="Bus" route="route1" depart="12" color="1,1,0" departLane="0"/>
-	<vehicle id="veh13" type="Bus" route="route1" depart="13" color="1,1,0" departLane="0"/>
-	<vehicle id="veh14" type="Bus" route="route1" depart="14" color="1,1,0" departLane="0"/>
+	<vehicle id="veh13" type="Bus" route="route0" depart="13" color="1,1,0" departLane="1"/>
+	<vehicle id="veh14" type="Bus" route="route0" depart="14" color="1,1,0" departLane="2"/>
 	<vehicle id="veh15" type="Bus" route="route1" depart="15" color="1,1,0" departLane="0"/>
-	<vehicle id="veh16" type="Bus" route="route1" depart="16" color="1,1,0" departLane="0"/>
-	<vehicle id="veh17" type="Car" route="route1" depart="17" color="1,1,0" departLane="0"/>
+	<vehicle id="veh16" type="Bus" route="route0" depart="16" color="1,1,0" departLane="1"/>
+	<vehicle id="veh17" type="Car" route="route0" depart="17" color="1,1,0" departLane="2"/>
 	<vehicle id="veh18" type="Bus" route="route1" depart="18" color="1,1,0" departLane="0"/>
-	<vehicle id="veh19" type="Bus" route="route1" depart="19" color="1,1,0" departLane="0"/>
-	<vehicle id="veh20" type="Bus" route="route1" depart="20" color="1,1,0" departLane="0"/>
+	<vehicle id="veh19" type="Bus" route="route0" depart="19" color="1,1,0" departLane="1"/>
+	<vehicle id="veh20" type="Bus" route="route0" depart="20" color="1,1,0" departLane="2"/>
 	<vehicle id="veh21" type="Bus" route="route1" depart="21" color="1,1,0" departLane="0"/>
-	<vehicle id="veh22" type="Bus" route="route1" depart="22" color="1,1,0" departLane="0"/>
-	<vehicle id="veh23" type="Bus" route="route1" depart="23" color="1,1,0" departLane="0"/>
+	<vehicle id="veh22" type="Bus" route="route0" depart="22" color="1,1,0" departLane="1"/>
+	<vehicle id="veh23" type="Bus" route="route0" depart="23" color="1,1,0" departLane="2"/>
 	<vehicle id="veh24" type="Bus" route="route0" depart="24" color="1,1,0" departLane="0"/>
 	<vehicle id="veh25" type="Bus" route="route0" depart="25" color="1,1,0" departLane="1"/>
 	<vehicle id="veh26" type="Bus" route="route0" depart="26" color="1,1,0" departLane="2"/>
@@ -46,23 +46,23 @@
 	<vehicle id="veh30" type="Bicycle" route="route0" depart="30" color="1,1,0" departLane="0"/>
 	<vehicle id="veh31" type="Bicycle" route="route0" depart="31" color="1,1,0" departLane="1"/>
 	<vehicle id="veh32" type="Bicycle" route="route0" depart="32" color="1,1,0" departLane="2"/>
-	<vehicle id="veh33" type="Bicycle" route="route1" depart="33" color="1,1,0" departLane="0"/>
-	<vehicle id="veh34" type="Bicycle" route="route1" depart="34" color="1,1,0" departLane="0"/>
-	<vehicle id="veh35" type="Bicycle" route="route1" depart="35" color="1,1,0" departLane="0"/>
-	<vehicle id="veh36" type="Bicycle" route="route1" depart="36" color="1,1,0" departLane="0"/>
-	<vehicle id="veh37" type="Bicycle" route="route1" depart="37" color="1,1,0" departLane="0"/>
-	<vehicle id="veh38" type="Bicycle" route="route1" depart="38" color="1,1,0" departLane="0"/>
-	<vehicle id="veh39" type="Bicycle" route="route1" depart="39" color="1,1,0" departLane="0"/>
-	<vehicle id="veh40" type="Bicycle" route="route1" depart="40" color="1,1,0" departLane="0"/>
-	<vehicle id="veh41" type="Bicycle" route="route1" depart="41" color="1,1,0" departLane="0"/>
-	<vehicle id="veh42" type="Bicycle" route="route1" depart="42" color="1,1,0" departLane="0"/>
-	<vehicle id="veh43" type="Bicycle" route="route1" depart="43" color="1,1,0" departLane="0"/>
-	<vehicle id="veh44" type="Bicycle" route="route1" depart="44" color="1,1,0" departLane="0"/>
-	<vehicle id="veh45" type="Bicycle" route="route1" depart="45" color="1,1,0" departLane="0"/>
-	<vehicle id="veh46" type="Bicycle" route="route1" depart="46" color="1,1,0" departLane="0"/>
-	<vehicle id="veh47" type="Bicycle" route="route1" depart="47" color="1,1,0" departLane="0"/>
-	<vehicle id="veh48" type="Bicycle" route="route1" depart="48" color="1,1,0" departLane="0"/>
-	<vehicle id="veh49" type="Bicycle" route="route1" depart="49" color="1,1,0" departLane="0"/>
+	<vehicle id="veh33" type="Bicycle" route="route0" depart="33" color="1,1,0" departLane="0"/>
+	<vehicle id="veh34" type="Bicycle" route="route0" depart="34" color="1,1,0" departLane="1"/>
+	<vehicle id="veh35" type="Bicycle" route="route0" depart="35" color="1,1,0" departLane="2"/>
+	<vehicle id="veh36" type="Bicycle" route="route0" depart="36" color="1,1,0" departLane="0"/>
+	<vehicle id="veh37" type="Bicycle" route="route0" depart="37" color="1,1,0" departLane="1"/>
+	<vehicle id="veh38" type="Bicycle" route="route0" depart="38" color="1,1,0" departLane="2"/>
+	<vehicle id="veh39" type="Bicycle" route="route0" depart="39" color="1,1,0" departLane="0"/>
+	<vehicle id="veh40" type="Bicycle" route="route0" depart="40" color="1,1,0" departLane="1"/>
+	<vehicle id="veh41" type="Bicycle" route="route0" depart="41" color="1,1,0" departLane="2"/>
+	<vehicle id="veh42" type="Bicycle" route="route0" depart="42" color="1,1,0" departLane="0"/>
+	<vehicle id="veh43" type="Bicycle" route="route0" depart="43" color="1,1,0" departLane="1"/>
+	<vehicle id="veh44" type="Bicycle" route="route0" depart="44" color="1,1,0" departLane="2"/>
+	<vehicle id="veh45" type="Bicycle" route="route0" depart="45" color="1,1,0" departLane="0"/>
+	<vehicle id="veh46" type="Bicycle" route="route0" depart="46" color="1,1,0" departLane="1"/>
+	<vehicle id="veh47" type="Bicycle" route="route0" depart="47" color="1,1,0" departLane="2"/>
+	<vehicle id="veh48" type="Bicycle" route="route0" depart="48" color="1,1,0" departLane="0"/>
+	<vehicle id="veh49" type="Bicycle" route="route0" depart="49" color="1,1,0" departLane="1"/>
 	<vehicle id="veh50" type="Bicycle" route="route0" depart="50" color="1,1,0" departLane="2"/>
 	<vehicle id="veh51" type="Bicycle" route="route0" depart="51" color="1,1,0" departLane="0"/>
 	<vehicle id="veh52" type="Bicycle" route="route0" depart="52" color="1,1,0" departLane="1"/>

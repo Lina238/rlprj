@@ -38,6 +38,7 @@ def evaluate_traffic():
         avg_queue_length = total_queue_length / len(traci.edge.getIDList())
         avg_speed = total_speed / total_vehicles
 
+        # Résultats
         print(f"Total véhicules : {total_vehicles}")
         print(f"Véhicules bloqués : {blocked_vehicles}")
         print(f"Longueur moyenne des files d'attente : {avg_queue_length:.2f}")
@@ -53,7 +54,7 @@ def evaluate_traffic():
     except traci.TraCIException as e:
         print(f"Erreur lors de l'évaluation du trafic : {e}")
 
-
+# Exemple d'utilisation dans une simulation SUMO
 if __name__ == "__main__":
     sumo_config = "../projectnet.sumocfg"
     

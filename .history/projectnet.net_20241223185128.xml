@@ -35,10 +35,10 @@
         <lane id="3to4_1" index="1" speed="30.00" length="150.00" shape="350.00,195.20 500.00,195.20"/>
         <lane id="3to4_2" index="2" speed="30.00" length="150.00" shape="350.00,198.40 500.00,198.40"/>
     </edge>
-    <edge id="E0" from="n5" to="n6" priority="2" type="3L50">
+    <edge id="E0" from="n5" to="n6" type="3L50">
         <lane id="E0_0" index="0" speed="13.89" length="297.24" shape="0.99,-1.26 234.17,183.07"/>
     </edge>
-    <edge id="E2" from="n6" to="n2" priority="2"  type="3L50">
+    <edge id="E2" from="n6" to="n2"  type="3L50">
         <lane id="E2_0" index="0" speed="13.89" length="150" shape="234.27,183.16 239.63,188.16"/>
     </edge>
     <edge id="in" from="n1" to="n2" priority="3" type="3L45">
