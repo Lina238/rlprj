@@ -1,7 +1,6 @@
 import traci
 import numpy as np
 import tensorflow as tf
-from tensorflow.keras import metrics
 import pickle
 
 class CustomLoss(tf.keras.losses.Loss):
@@ -16,10 +15,10 @@ class CustomLoss(tf.keras.losses.Loss):
 
 class TrafficLightRLTest:
     def __init__(self, model_path):
-
+        # Register both the custom loss and the MSE metric
         custom_objects = {
             "CustomLoss": CustomLoss,
-            "mse": tf.keras.losses.MeanSquaredError()
+            "mse": tf.keras.metrics.mean_squared_error,
         }
         
         try:
@@ -110,8 +109,8 @@ class TrafficLightRLTest:
 
 if __name__ == "__main__":
     try:
-        sumo_config_file = "../projectnet.sumocfg"
-        model_path = "DQL_models/traffic_light_control_episode_100.h5"
+        sumo_config_file = "../../projectnet.sumocfg"
+        model_path = "DQL_models/with_controller_episode_100.h5"
         tester = TrafficLightRLTest(model_path)
         tester.test(sumo_config_file)
     except Exception as e:

@@ -55,7 +55,7 @@ def evaluate_traffic():
 
 
 if __name__ == "__main__":
-    sumo_config = "../projectnet.sumocfg"
+    sumo_config = "../../projectnet.sumocfg"
     
     try:
         traci.start(["sumo", "-c", sumo_config])

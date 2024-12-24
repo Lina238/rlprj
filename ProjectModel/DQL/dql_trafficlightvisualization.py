@@ -90,7 +90,7 @@ class TrafficLightVisualization:
 def main():
     # Chemins des fichiers
     test_data_path = "DQL_TEST_VISUALISATION.pkl"
-    sumo_config = "../projectnet.sumocfg"
+    sumo_config = "../../projectnet.sumocfg"
     
     # Créer et exécuter la visualisation
     visualizer = TrafficLightVisualization(test_data_path, sumo_config)

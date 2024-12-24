@@ -211,7 +211,7 @@ class TrafficLightRL:
 
 def main():
     """Fonction principale d'entraînement"""
-    config_file = "../projectnet.sumocfg"  # Fichier de configuration SUMO
+    config_file = "../../projectnet.sumocfg"  # Fichier de configuration SUMO
     agent = TrafficLightRL()  # Créer une instance de l'agent
     # agent.train(config_file, control_traffic_lights=True, model_name="traffic_light_control")  # Entraîner l'agent
     agent.train(config_file, control_traffic_lights=False, model_name="without_traffic_light_control")  # Entraîner l'agent
