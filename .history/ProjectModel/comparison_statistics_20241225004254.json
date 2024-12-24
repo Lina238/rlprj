@@ -1,0 +1,34 @@
+{
+    "Avec contrôleur": {
+        "Moyenne": 1465.0647943490744,
+        "Écart-type": 219.61709601616076,
+        "Maximum": 2029.795664191246,
+        "Minimum": 838.7589349746704,
+        "Médiane": 1459.7411526441574
+    },
+    "Sans contrôleur": {
+        "Moyenne": 58006.14725482464,
+        "Écart-type": 0.0,
+        "Maximum": 58006.14725482464,
+        "Minimum": 58006.14725482464,
+        "Médiane": 58006.14725482464
+    }
+}
+Avec contrôle des feux de circulation activé (control_traffic_lights=True)
+Lorsque control_traffic_lights=True, l'agent choisit les actions en fonction de l'état du trafic et applique des changements de phase aux feux de circulation. L'objectif ici est d'optimiser la gestion du trafic pour réduire la congestion, améliorer la vitesse moyenne des véhicules et éviter les changements de phases inutiles, ce qui pourrait entraîner des pénalités. Le modèle doit apprendre à sélectionner les phases de feux appropriées en fonction de l'état du trafic pour maximiser la récompense à long terme.
+
+Les résultats attendus incluent :
+
+Réduction de la longueur des files d'attente : Le modèle apprend à ajuster les phases de feu pour minimiser l'attente des véhicules.
+Amélioration de la vitesse moyenne : L'agent apprend à ajuster les feux pour permettre une circulation fluide.
+Pénalité pour une occupation excessive : Si une voie devient trop occupée, une pénalité est appliquée pour encourager l'agent à éviter cette situation.
+Stabilité dans les changements de phases : L'agent doit éviter de changer trop fréquemment la phase, car cela pourrait perturber la circulation et entraîner des pénalités.
+Sans contrôle des feux de circulation activé (control_traffic_lights=False)
+Lorsque control_traffic_lights=False, l'agent ne prend aucune décision concernant les phases des feux de circulation. Dans ce cas, l'agent suit un modèle de simulation où les feux de circulation sont laissés par défaut (phase 0). Cette configuration sert de base de comparaison pour voir l'impact du contrôle actif des feux sur la gestion du trafic.
+
+Les résultats attendus incluent :
+
+Peu ou pas d'amélioration de la circulation : Puisque l'agent n'intervient pas pour ajuster les phases des feux, la gestion du trafic reste suboptimale par rapport à l'entraînement avec contrôle actif.
+Longueur des files d'attente plus importante : Sans intervention active sur les feux de circulation, les véhicules pourraient attendre plus longtemps.
+Vitesse moyenne plus faible : L'absence d'ajustement des feux pourrait entraîner une circulation plus lente.
+Problèmes d'occupation : Les voies pourraient devenir plus occupées sans ajustement dynamique des phases de feux.
